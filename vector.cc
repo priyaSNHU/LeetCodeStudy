@@ -231,6 +231,8 @@ int main() {
     v.remove(0);
     std::cout << "After remove(): " << v << std::endl;
     v.remove(v.size() - 1);
+    std::cout << "After direct update: " << v << std::endl;
+    v[0] = -5;
     std::cout << "After remove(end): " << v << std::endl;
     std::cout << "NaiveVector ==== DONE" << std::endl;
   }
@@ -246,6 +248,8 @@ int main() {
     v.remove(0);
     std::cout << "After remove(): " << v << std::endl;
     v.remove(v.size() - 1);
+    std::cout << "After direct update: " << v << std::endl;
+    v[0] = -5;
     std::cout << "After remove(end): " << v << std::endl;
     std::cout << "BetterVector ==== DONE" << std::endl;
   }
