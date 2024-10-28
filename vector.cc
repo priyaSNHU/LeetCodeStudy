@@ -50,7 +50,7 @@ class NaiveVector {
 
       // TODO: Grow efficiently.
       m_backing = (T*)::realloc(m_backing, (m_size + 1) * sizeof(T));
-      for (size_t i = pos; i < m_size; ++i) {
+      for (ssize_t i = m_size - 1; i >= (ssize_t)pos; --i) {
         m_backing[i + 1] = m_backing[i];
       }
       m_backing[pos] = val;
@@ -159,7 +159,7 @@ class BetterVector {
       assert(pos <= m_size);
 
       growIfNeeded(m_size + 1);
-      for (size_t i = pos; i < m_size; ++i) {
+      for (ssize_t i = m_size - 1; i >= (ssize_t)pos; --i) {
         m_backing[i + 1] = m_backing[i];
       }
       m_backing[pos] = val;
@@ -222,8 +222,10 @@ std::ostream& operator<<(std::ostream& o, const BetterVector<T>& v) {
 int main() {
   {
     std::cout << "NaiveVector" << std::endl;
-    NaiveVector<int> v(1, 10);
-    std::cout << "Default vector: " << v << std::endl;
+    NaiveVector<int> v(2, 10);
+    std::cout << "Initial vector: " << v << std::endl;
+    v[1] = 20;
+    std::cout << "After direct update: " << v << std::endl;
     v.insert(0, 12);
     std::cout << "After add(): " << v << std::endl;
     v.append(14);
@@ -231,16 +233,18 @@ int main() {
     v.remove(0);
     std::cout << "After remove(): " << v << std::endl;
     v.remove(v.size() - 1);
-    std::cout << "After direct update: " << v << std::endl;
-    v[0] = -5;
     std::cout << "After remove(end): " << v << std::endl;
+    v[0] = -5;
+    std::cout << "After direct update: " << v << std::endl;
     std::cout << "NaiveVector ==== DONE" << std::endl;
   }
 
   {
     std::cout << "BetterVector" << std::endl;
-    BetterVector<int> v(1, 10);
-    std::cout << "Default vector: " << v << std::endl;
+    BetterVector<int> v(2, 10);
+    std::cout << "Initial vector: " << v << std::endl;
+    v[1] = 20;
+    std::cout << "After direct update: " << v << std::endl;
     v.insert(0, 12);
     std::cout << "After add(): " << v << std::endl;
     v.append(14);
@@ -248,9 +252,9 @@ int main() {
     v.remove(0);
     std::cout << "After remove(): " << v << std::endl;
     v.remove(v.size() - 1);
-    std::cout << "After direct update: " << v << std::endl;
-    v[0] = -5;
     std::cout << "After remove(end): " << v << std::endl;
+    v[0] = -5;
+    std::cout << "After direct update: " << v << std::endl;
     std::cout << "BetterVector ==== DONE" << std::endl;
   }
 
