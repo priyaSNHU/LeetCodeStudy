@@ -1,3 +1,5 @@
+// Build using:
+//   g++ -Wall -Werror --sanitize=address -g -o vector vector.cc && ./vector
 #include <cassert>
 #include <iostream>
 

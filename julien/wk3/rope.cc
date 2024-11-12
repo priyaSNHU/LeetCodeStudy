@@ -1,3 +1,5 @@
+// Build using:
+//   g++ -Wall -Werror --sanitize=address -g -o rope rope.cc && ./rope
 #include <cassert>
 #include <iostream>
 #include <memory>

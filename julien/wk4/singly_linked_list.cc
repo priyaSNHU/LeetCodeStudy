@@ -1,3 +1,5 @@
+// Build using:
+//   g++ -Wall -Werror --sanitize=address -g -o singly_linked_list singly_linked_list.cc && ./singly_linked_list
 #include <cassert>
 #include <iostream>
 #include <memory>
