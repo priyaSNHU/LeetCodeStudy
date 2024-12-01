@@ -38,7 +38,7 @@ public:
     m_used--;
     if (m_used > 0) {
       m_backing[0] = m_backing[m_used];
-      updateRecursive(0);
+      bubbleDownRecursive(0);
     }
     return res.t;
   }
@@ -58,7 +58,7 @@ public:
     }
     int idx = m_used++;
     m_backing[idx] = Node<T>{priority, t};
-    reshapeHeapFrom(idx);
+    bubbleUpRecursive(idx);
   }
 
   void dump(std::ostream& o) const {
@@ -73,27 +73,30 @@ public:
   }
 
 private:
-  void updateRecursive(size_t idx) {
+  void bubbleDownRecursive(size_t idx) {
     assert(idx < m_used);
 
     size_t left = 2 * idx + 1;
-    if (left < m_used && m_backing[left].priority >= m_backing[idx].priority) {
-      Node<T> tmp = m_backing[left];
-      m_backing[left] = m_backing[idx];
-      m_backing[idx] = tmp;
-      updateRecursive(left);
+    size_t right = 2 * idx + 2;
+    size_t largest = idx;
+
+    if (left < m_used && m_backing[left].priority > m_backing[idx].priority) {
+      largest = left;
     }
 
-    size_t right = 2 * idx + 2;
     if (right < m_used && m_backing[right].priority >= m_backing[idx].priority) {
-      Node<T> tmp = m_backing[right];
-      m_backing[right] = m_backing[idx];
+      largest = right;
+    }
+
+    if (largest != idx) {
+      Node<T> tmp = m_backing[largest];
+      m_backing[largest] = m_backing[idx];
       m_backing[idx] = tmp;
-      updateRecursive(right);
+      bubbleDownRecursive(largest);
     }
   }
 
-  void reshapeHeapFrom(size_t idx) {
+  void bubbleUpRecursive(size_t idx) {
     if (idx == 0) {
       return;
     }
@@ -103,7 +106,7 @@ private:
       Node<T> tmp = m_backing[parent];
       m_backing[parent] = m_backing[idx];
       m_backing[idx] = tmp;
-      reshapeHeapFrom(parent);
+      bubbleUpRecursive(parent);
     }
   }
 
